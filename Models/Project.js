@@ -6,7 +6,7 @@ const ProjectSchema = mongoose.Schema({
     projectDescription: {type: String, required: true},
     startDate: {type: String, required: true},
     endDate: {type: String, required: true},
-    teamMembers: {type: String, required: true},
+    teamMembers: {type: Array, required: true},
     status: {type: String, required: true},
 })
 
