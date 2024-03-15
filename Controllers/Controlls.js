@@ -17,11 +17,7 @@ const Controlls = {
                 req.body.password = hash;
                 const validationResult = new UserSchema(req.body)
                 const result = await validationResult.save()
-                if (result) {
-                    res.send('User saved succesfully');
-                } else {
-                    res.send('Error saving user');
-                }
+                res.send(result)
             });
         });
     },
@@ -42,12 +38,7 @@ const Controlls = {
                 $set: req.body
             };
             const result = await UserSchema.updateOne(filter, updateDoc, options);
-            if (result.modifiedCount === 1) {
-                res.status(201).send('Updated successfully')
-            } else {
-                res.status(201).send('User created successfully')
-            }
-            res.status(201).send(result)
+            res.send(result)
         } catch (error) {
             res.status(500).send(error)
         }
@@ -55,11 +46,7 @@ const Controlls = {
     addProject: async (req, res) => {
         const validationResult = new ProjectSchema(req.body)
         const result = await validationResult.save()
-        if (result) {
-            res.send('Project saved succesfully');
-        } else {
-            res.send('Error saving user');
-        }
+        res.send(result)
     },
     getProjects: async (req, res) => {
         const results = await Project.find();
@@ -77,12 +64,7 @@ const Controlls = {
                 $set: req.body
             };
             const result = await Project.updateOne(filter, updateDoc, options);
-            if (result.modifiedCount === 1) {
-                res.status(201).send('Updated successfully')
-            } else {
-                res.status(201).send('User created successfully')
-            }
-            res.status(201).send(result)
+            res.send(result)
         } catch (error) {
             res.status(500).send(error)
         }
@@ -90,11 +72,7 @@ const Controlls = {
     assignTask: async (req, res) => {
         const validationResult = new TeamMemberTaskSchema(req.body)
         const result = await validationResult.save()
-        if (result) {
-            res.send('Task assigned succesfully');
-        } else {
-            res.send('Error saving user');
-        }
+        res.send(result)
     },
     getTasks: async (req, res) => {
         const results = await TeamMemberTaskSchema.find();
@@ -112,11 +90,7 @@ const Controlls = {
                 $set: req.body
             };
             const result = await TeamMemberTaskSchema.updateOne(filter, updateDoc, options);
-            if (result.modifiedCount === 1) {
-                res.status(201).send('Updated successfully')
-            } else {
-                res.status(201).send('User created successfully')
-            }
+            res.send(result)
             res.status(201).send(result)
         } catch (error) {
             res.status(500).send(error)
