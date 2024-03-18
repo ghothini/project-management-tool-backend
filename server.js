@@ -4,6 +4,7 @@ const routes = require('./Routes/routes')
 const app = express()
 const port = 3000;
 const cors = require('cors')
+const nodemailer = require('nodemailer')
 
 var corsOptions = {
     origin: 'http://localhost:4200',
@@ -20,4 +21,37 @@ app.use(routes)
 
 app.listen(port, () => {
     console.log('App running on port 3000');
+})
+
+
+const sendPassword = (req) => {
+    
+    let mailTransporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'Kimberlymnguni@gmail.com',
+            pass: 'hgdtwrdqheiesibm'
+        }
+    })
+
+    let details = {
+        from: 'Kimberlymnguni@gmail.com',
+        to: `${req.email}`,
+        subject: 'Account',
+        text: `Hey ${req.firstName}, your user account has been successfully created and your password ${req.password}. Use your email address and this password to log in. `
+    }
+
+
+    mailTransporter.sendMail(details, (err) => {
+        if (err) {
+            console.log('It has an error', err)
+        } else {
+            console.log('Messege send successfully')
+        }
+    })
+}
+
+app.post('/sendPassword', (req, res) => {
+    console.log(req.body)
+    sendPassword(req.body)
 })

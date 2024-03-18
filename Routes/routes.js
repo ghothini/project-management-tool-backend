@@ -14,6 +14,8 @@ router.post('/add-user',Controlls.addUser)
 router.post('/add-project',Controlls.addProject)
 router.post('/add-task',Controlls.addTask)
 router.post('/assign-task',Controlls.assignTask)
+// router.post('/sendPassword',)
+
 
 // Update
 router.post('/update-user',Controlls.updateUser)
