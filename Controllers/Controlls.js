@@ -1,8 +1,10 @@
 const UserSchema = require('../Models/User')
 const ProjectSchema = require('../Models/Project')
 const bcrypt = require('bcrypt');
-const TeamMemberTaskSchema = require('../Models/TeamMemberTask');
+const TaskSchema = require('../Models/Task');
+const TeamMemberTask = require('../Models/TeamMemberTask');
 const Project = require('../Models/Project');
+const nodemailer = require('nodemailer');
 
 const Controlls = {
     defaultEndPoint: (req, res) => {
@@ -69,17 +71,34 @@ const Controlls = {
             res.status(500).send(error)
         }
     },
-    assignTask: async (req, res) => {
-        const validationResult = new TeamMemberTaskSchema(req.body)
+    addTask: async (req, res) => {
+        const validationResult = new TaskSchema(req.body)
         const result = await validationResult.save()
         res.send(result)
     },
     getTasks: async (req, res) => {
-        const results = await TeamMemberTaskSchema.find();
+        const results = await TaskSchema.find();
+        res.send(results)
+    },
+    assignTask: async (req, res) => {
+        const validationResult = new TeamMemberTask(req.body)
+        const result = await validationResult.save()
+        res.send(result)
+    },
+    getAssignedTasks: async (req, res) => {
+        const results = await TeamMemberTask.find();
+        res.send(results)
+    },
+    deleteAssignedTask: async (req, res) => {
+        const results = await TeamMemberTask.deleteOne(req.params);
+        res.send(results)
+    },
+    getTasks: async (req, res) => {
+        const results = await TaskSchema.find();
         res.send(results)
     },
     deleteTask: async (req, res) => {
-        const results = await TeamMemberTaskSchema.deleteOne(req.params);
+        const results = await TaskSchema.deleteOne(req.params);
         res.send(results)
     },
     updateTask: async (req, res) => {
@@ -89,7 +108,7 @@ const Controlls = {
             const updateDoc = {
                 $set: req.body
             };
-            const result = await TeamMemberTaskSchema.updateOne(filter, updateDoc, options);
+            const result = await TaskSchema.updateOne(filter, updateDoc, options);
             res.send(result)
             res.status(201).send(result)
         } catch (error) {
