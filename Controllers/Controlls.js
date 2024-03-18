@@ -17,6 +17,7 @@ const Controlls = {
                 console.log("err", err)
                 console.log("hashed  password", hash)
                 req.body.password = hash;
+                req.body.email = req.body.email.toLowerCase();
                 const validationResult = new UserSchema(req.body)
                 const result = await validationResult.save()
                 res.send(result)
@@ -26,6 +27,16 @@ const Controlls = {
     getUsers: async (req, res) => {
         const results = await UserSchema.find();
         res.send(results)
+    },
+    login: async (req, res) => {
+        const results = await UserSchema.findOne({ email: req.params.email.toLowerCase() });
+        if (!results) {
+            res.send({ emailExists: false, passwordMatches: false });
+        }
+        // Checking matching password
+        bcrypt.compare(req.params.password, results.password, function (err, result) {
+            res.send({ emailExists: true, passwordMatches: result, userAcc: results });
+        });
     },
     deleteUser: async (req, res) => {
         // To delete user based on params
