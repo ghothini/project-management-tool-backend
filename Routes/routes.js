@@ -20,10 +20,11 @@ router.post('/assign-task', Controlls.assignTask)
 
 // Update
 router.post('/update-user', Controlls.updateUser)
+router.post('/update-user-password', Controlls.updateUserPassword)
 router.post('/update-project', Controlls.updateProject)
 router.post('/update-task', Controlls.updateTask)
 router.post('/update-assigned-task', Controlls.updateAssignedTask)
-router.post('/checkPassword/:plainPassword/:hashedPassword', Controlls.checkPassword)
+router.post('/checkPassword', Controlls.checkPassword)
 
 // Delete
 router.delete('/delete-user/:email', Controlls.deleteUser)

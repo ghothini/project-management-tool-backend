@@ -29,8 +29,9 @@ const Controlls = {
         res.send(results)
     },
     checkPassword: async (req, res) => {
+        console.log("req.body", req.body)
         // Checking matching password
-        bcrypt.compare(req.params.plainPassword, req.params.hashedPassword, function (err, result) {
+        bcrypt.compare(req.body.plainPassword, req.body.hashedPassword, function (err, result) {
             res.send(result);
         });
     },
@@ -58,6 +59,28 @@ const Controlls = {
             };
             const result = await UserSchema.updateOne(filter, updateDoc, options);
             res.send(result)
+        } catch (error) {
+            res.status(500).send(error)
+        }
+    },
+    updateUserPassword: async (req, res) => {
+        try {
+            const saltRounds = 10;
+            bcrypt.genSalt(saltRounds, function (err, salt) {
+                bcrypt.hash(req.body.password, salt, async function (err, hash) {
+
+                    req.body.password = hash;
+                    req.body.email = req.body.email.toLowerCase();
+
+                    const filter = { email: req.body.email };
+                    const options = { upsert: true };
+                    const updateDoc = {
+                        $set: req.body
+                    };
+                    const result = await UserSchema.updateOne(filter, updateDoc, options);
+                    res.send(result)
+                });
+            });
         } catch (error) {
             res.status(500).send(error)
         }
