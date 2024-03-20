@@ -21,12 +21,14 @@ router.post('/assign-task', Controlls.assignTask)
 // Update
 router.post('/update-user', Controlls.updateUser)
 router.post('/update-project', Controlls.updateProject)
-router.post('/update-member-task', Controlls.updateTask)
+router.post('/update-task', Controlls.updateTask)
+router.post('/update-assigned-task', Controlls.updateAssignedTask)
+router.post('/checkPassword/:plainPassword/:hashedPassword', Controlls.checkPassword)
 
 // Delete
 router.delete('/delete-user/:email', Controlls.deleteUser)
 router.delete('/delete-project/:projectDescription', Controlls.deleteProject)
-router.delete('/delete-task/:taskDescription', Controlls.deleteTask)
+router.delete('/delete-task/:_id', Controlls.deleteTask)
 router.delete('/delete-assigned-task/:_id', Controlls.deleteAssignedTask)
 
 module.exports = router;

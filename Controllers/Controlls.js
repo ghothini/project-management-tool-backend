@@ -28,6 +28,12 @@ const Controlls = {
         const results = await UserSchema.find();
         res.send(results)
     },
+    checkPassword: async (req, res) => {
+        // Checking matching password
+        bcrypt.compare(req.params.plainPassword, req.params.hashedPassword, function (err, result) {
+            res.send(result);
+        });
+    },
     login: async (req, res) => {
         const results = await UserSchema.findOne({ email: req.params.email.toLowerCase() });
         if (!results) {
@@ -104,6 +110,20 @@ const Controlls = {
         const results = await TeamMemberTask.deleteOne(req.params);
         res.send(results)
     },
+    updateAssignedTask: async (req, res) => {
+        try {
+            const filter = { _id: req.body._id };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: req.body
+            };
+            const result = await TeamMemberTask.updateOne(filter, updateDoc, options);
+            res.send(result)
+            res.status(201).send(result)
+        } catch (error) {
+            res.status(500).send(error)
+        }
+    },
     getTasks: async (req, res) => {
         const results = await TaskSchema.find();
         res.send(results)
@@ -114,7 +134,7 @@ const Controlls = {
     },
     updateTask: async (req, res) => {
         try {
-            const filter = { taskDescription: req.body.taskDescription };
+            const filter = { _id: req.body._id };
             const options = { upsert: true };
             const updateDoc = {
                 $set: req.body
