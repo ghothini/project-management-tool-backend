@@ -38,7 +38,34 @@ const sendPassword = (req) => {
         from: 'Kimberlymnguni@gmail.com',
         to: `${req.email}`,
         subject: 'Account',
-        text: `Hey ${req.firstName}, your user account has been successfully created and your password ${req.password}. Use your email address and this password to log in. `
+        text: `Hey ${req.firstName}, your user account has been successfully created and your password ${req.body.password}. Use your email address and this password to log in. `
+    }
+
+
+    mailTransporter.sendMail(details, (err) => {
+        if (err) {
+            console.log('It has an error', err)
+        } else {
+            console.log('Messege send successfully')
+        }
+    })
+}
+
+const forgotPassword = (req) => {
+    
+    let mailTransporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'Kimberlymnguni@gmail.com',
+            pass: 'hgdtwrdqheiesibm'
+        }
+    })
+
+    let details = {
+        from: 'Kimberlymnguni@gmail.com',
+        to: `${req.body.email}`,
+        subject: 'Account',
+        text: `Hey ${req.firstName}, your password is: ${req.password}. Use your email address and this password to log in. `
     }
 
 
@@ -54,4 +81,10 @@ const sendPassword = (req) => {
 app.post('/sendPassword', (req, res) => {
     console.log(req.body)
     sendPassword(req.body)
+})
+app.post('/forgotPassword', (req, res) => {
+    console.log( 'forgot req', req)
+    console.log( 'forgot', req.body.email)
+
+    forgotPassword(req)
 })
