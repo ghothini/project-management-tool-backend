@@ -23,23 +23,6 @@ app.listen(port, () => {
     console.log('App running on port 3000');
 })
 
-const tls = require('tls');
-
-const options = {
-    host: 'localhost',
-    port: 4200,
-    rejectUnauthorized: false
-};
-
-const socket = tls.connect(options, () => {
-    console.log('Connected');
-});
-
-socket.on('error', (error) => {
-    console.error('Error:', error);
-});
-
-
 const sendPassword = (req) => {
 
     let mailTransporter = nodemailer.createTransport({
@@ -72,21 +55,22 @@ app.post('/sendPassword', (req, res) => {
     sendPassword(req.body)
 })
 app.post('/forgotPassword', (req, res) => {
-    console.log('forgot req', req.body)
-    console.log('forgot', req.body.email)
 
     let mailTransporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: 'Kimberlymnguni@gmail.com',
             pass: 'hgdtwrdqheiesibm'
+        },
+        tls: {
+            rejectUnauthorized: false
         }
     })
 
     const messages = {
         "resetPassword": `Hey ${req.body.firstName}, your password is: test123. Use your email address and this password to log in.`,
         "taskAssignment": "A new task has been assigned to you by management. Log in for latest updates",
-        "accountCreated": "Your Management Tool Account has been created. Log in for latest updates"
+        "accountCreated": "Your Management Tool Account has been created. Log in with default password test123 and request the password change"
     }
 
     let details;
@@ -123,6 +107,7 @@ app.post('/forgotPassword', (req, res) => {
             console.log('It has an error', err)
         } else {
             console.log('Messege send successfully')
+            res.send(true);
         }
     })
 })

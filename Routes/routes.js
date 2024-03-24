@@ -9,6 +9,7 @@ router.get('/login/:email/:password', Controlls.login)
 router.get('/get-projects', Controlls.getProjects)
 router.get('/get-tasks', Controlls.getTasks)
 router.get('/assigned-tasks', Controlls.getAssignedTasks)
+router.get('/add-management-accounts', Controlls.addManagementAccounts)
 
 // Post
 router.post('/add-user', Controlls.addUser)
@@ -31,6 +32,14 @@ router.delete('/delete-user/:email', Controlls.deleteUser)
 router.delete('/delete-project/:projectDescription', Controlls.deleteProject)
 router.delete('/delete-task/:_id', Controlls.deleteTask)
 router.delete('/delete-assigned-task/:_id', Controlls.deleteAssignedTask)
+
+// Emails
+router.post('/taskEmail', Controlls.taskAssignedEmail)
+router.post('/projectHealthEmail', Controlls.projectHealthEmail)
+router.post('/projectStatusEmail', Controlls.projectStatusEmail)
+router.post('/taskStatusEmail', Controlls.taskStatusEmail)
+router.post('/forgot-password', Controlls.forgotPasswordEmail)
+
 
 module.exports = router;
 
